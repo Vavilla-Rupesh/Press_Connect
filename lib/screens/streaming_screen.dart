@@ -61,12 +61,26 @@ class _StreamingScreenState extends State<StreamingScreen> {
     });
 
     try {
-      final token = await _authService.getAccessToken();
-      if (token == null) {
-        throw Exception('No YouTube access token available');
+      // Check if YouTube authentication is available
+      final isYouTubeAuth = await _authService.isAuthenticated();
+      if (!isYouTubeAuth) {
+        throw Exception('YouTube authentication required. Please authenticate with YouTube first.');
       }
 
-      final streamData = await _streamingService.createYouTubeStream(token);
+      // Show stream configuration dialog
+      final streamConfig = await _showStreamConfigDialog();
+      if (streamConfig == null) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+
+      final streamData = await _streamingService.createYouTubeStream(
+        streamConfig['title']!,
+        streamConfig['description']!,
+        streamConfig['privacy']!,
+      );
       
       if (streamData != null) {
         await _streamingService.startStreaming(
@@ -80,9 +94,10 @@ class _StreamingScreenState extends State<StreamingScreen> {
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Live streaming started!'),
+            SnackBar(
+              content: Text('Live streaming started!\nBroadcast URL: ${streamData['broadcastUrl']}'),
               backgroundColor: Colors.green,
+              duration: const Duration(seconds: 5),
             ),
           );
         }
@@ -93,6 +108,7 @@ class _StreamingScreenState extends State<StreamingScreen> {
           SnackBar(
             content: Text('Failed to start streaming: $e'),
             backgroundColor: Colors.red,
+            duration: const Duration(seconds: 5),
           ),
         );
       }
@@ -101,6 +117,71 @@ class _StreamingScreenState extends State<StreamingScreen> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  Future<Map<String, String>?> _showStreamConfigDialog() async {
+    final titleController = TextEditingController();
+    final descriptionController = TextEditingController();
+    String selectedPrivacy = 'public';
+
+    return showDialog<Map<String, String>>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Configure Stream'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: const InputDecoration(
+                  labelText: 'Stream Title',
+                  hintText: 'Enter stream title (optional)',
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: descriptionController,
+                decoration: const InputDecoration(
+                  labelText: 'Description',
+                  hintText: 'Enter stream description (optional)',
+                ),
+                maxLines: 3,
+              ),
+              const SizedBox(height: 16),
+              DropdownButtonFormField<String>(
+                value: selectedPrivacy,
+                decoration: const InputDecoration(
+                  labelText: 'Privacy Setting',
+                ),
+                items: const [
+                  DropdownMenuItem(value: 'public', child: Text('Public')),
+                  DropdownMenuItem(value: 'unlisted', child: Text('Unlisted')),
+                  DropdownMenuItem(value: 'private', child: Text('Private')),
+                ],
+                onChanged: (value) => selectedPrivacy = value ?? 'public',
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop({
+                'title': titleController.text,
+                'description': descriptionController.text,
+                'privacy': selectedPrivacy,
+              });
+            },
+            child: const Text('Start Stream'),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _stopStreaming() async {
