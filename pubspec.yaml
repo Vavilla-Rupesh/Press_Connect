@@ -1,0 +1,31 @@
+name: press_connect
+description: A Flutter mobile app for live streaming to YouTube with watermarks
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  http: ^1.1.0
+  flutter_rtmp_publisher: ^1.0.5
+  url_launcher: ^6.2.1
+  shared_preferences: ^2.2.2
+  oauth2: ^2.0.2
+  image_picker: ^1.0.4
+  camera: ^0.10.5+5
+  path_provider: ^2.1.1
+  permission_handler: ^11.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
