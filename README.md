@@ -1,51 +1,121 @@
-# Press Connect - Live Streaming Mobile App
+# Press Connect - Production-Ready Live Streaming App
 
-A Flutter mobile application for live streaming to YouTube with watermark overlay functionality.
+A Flutter mobile application for live streaming to YouTube with PostgreSQL database backend, user authentication, and watermark overlay functionality.
 
 ## Features
 
-- **Dual Login System**: App login (admin/1234) + YouTube OAuth2
-- **Live Streaming**: Direct RTMP streaming to YouTube
-- **Watermark Overlay**: Customizable transparency overlay
-- **Recording & Snapshots**: Local recording and snapshot capture
-- **Multiple Streams**: Support for separate broadcast keys
+- **User Authentication**: Registration and login with JWT tokens
+- **YouTube OAuth2**: Secure OAuth2 integration with token management
+- **Live Streaming**: Direct RTMP streaming to YouTube with real-time controls
+- **Watermark Overlay**: Customizable transparency overlay with professional branding
+- **Recording & Snapshots**: Local recording and snapshot capture during streaming
+- **Stream Management**: Database-backed stream lifecycle management
+- **Multi-User Support**: Individual user accounts with isolated streams
+- **Production Ready**: PostgreSQL database, proper error handling, security
 
-## Setup Instructions
+## Architecture
+
+### Backend (Node.js + PostgreSQL)
+- Express.js API server with JWT authentication
+- PostgreSQL database with proper schema
+- YouTube Data API v3 integration
+- OAuth2 token management
+- Stream lifecycle management
+- User management and registration
+
+### Frontend (Flutter)
+- User registration and login screens
+- YouTube OAuth2 authentication flow
+- Real-time camera preview with watermark
+- Stream configuration and management
+- Recording and snapshot functionality
+
+## Production Setup
 
 ### Prerequisites
 
-1. Flutter SDK 3.0+
-2. Node.js 16+
-3. YouTube Data API v3 credentials
+1. **PostgreSQL 12+** - Database server
+2. **Node.js 16+** - Backend runtime
+3. **Flutter SDK 3.0+** - Mobile app framework
+4. **YouTube Data API v3 credentials** - From Google Cloud Console
 
-### Backend Setup
+### Quick Setup (Linux/macOS)
 
-1. Navigate to the backend directory:
-   ```bash
-   cd backend
+Run the automated setup script:
+
+```bash
+./setup_postgresql.sh
+```
+
+This script will:
+- Create PostgreSQL database and user
+- Install backend dependencies
+- Generate secure JWT secrets
+- Create environment configuration
+- Run database migrations
+
+### Manual Setup
+
+#### 1. Database Setup
+
+```bash
+# Install PostgreSQL (Ubuntu/Debian)
+sudo apt-get install postgresql postgresql-contrib
+
+# Create database and user
+sudo -u postgres psql
+CREATE DATABASE press_connect;
+CREATE USER press_connect_user WITH ENCRYPTED PASSWORD 'your_secure_password';
+GRANT ALL PRIVILEGES ON DATABASE press_connect TO press_connect_user;
+\q
+```
+
+#### 2. Backend Setup
+
+```bash
+cd backend
+
+# Install dependencies
+npm install
+
+# Copy and configure environment
+cp .env.production .env
+# Edit .env with your database credentials and YouTube API keys
+
+# Run database migrations
+npm run migrate
+
+# Start the server
+npm start
+```
+
+#### 3. YouTube API Setup
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing one
+3. Enable **YouTube Data API v3**
+4. Create credentials:
+   - **API Key** for general API access
+   - **OAuth 2.0 Client ID** for user authentication
+5. Update `backend/.env` with your credentials:
+   ```
+   YOUTUBE_API_KEY=your_api_key_here
+   YOUTUBE_CLIENT_ID=your_client_id_here
+   YOUTUBE_CLIENT_SECRET=your_client_secret_here
    ```
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+#### 4. Mobile App Setup
 
-3. Copy environment file:
-   ```bash
-   cp .env.example .env
-   ```
+```bash
+# Install Flutter dependencies
+flutter pub get
 
-4. Update `.env` with your YouTube API credentials:
-   ```
-   YOUTUBE_API_KEY=your_api_key
-   YOUTUBE_CLIENT_ID=your_client_id
-   YOUTUBE_CLIENT_SECRET=your_client_secret
-   ```
+# Update YouTube credentials in lib/services/youtube_auth_service.dart
+# Replace YOUR_YOUTUBE_CLIENT_ID and YOUR_YOUTUBE_CLIENT_SECRET
 
-5. Start the backend server:
-   ```bash
-   npm start
-   ```
+# Run the app
+flutter run
+```
 
 ### Mobile App Setup
 
