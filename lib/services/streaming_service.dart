@@ -2,12 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import '../config/app_config.dart';
 import 'youtube_auth_service.dart';
 // Note: rtmp_broadcaster would be used in real implementation
 
 class StreamingService {
-  static const String _backendUrl = 'http://localhost:3000';
-  
   String? _currentStreamKey;
   String? _currentIngestUrl;
   String? _currentBroadcastId;
@@ -26,7 +25,7 @@ class StreamingService {
 
       // Call our backend to create YouTube broadcast and stream
       final response = await http.post(
-        Uri.parse('$_backendUrl/api/create-stream'),
+        Uri.parse(AppConfig.streamCreateUrl),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $appToken',
@@ -104,7 +103,7 @@ class StreamingService {
       if (appToken == null) return;
 
       await http.patch(
-        Uri.parse('$_backendUrl/api/streams/$_currentStreamKey/start'),
+        Uri.parse(AppConfig.streamStartUrl(_currentStreamKey!)),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $appToken',
@@ -132,7 +131,7 @@ class StreamingService {
           final appToken = await _authService.getAppToken();
           if (appToken != null) {
             await http.post(
-              Uri.parse('$_backendUrl/api/end-stream'),
+              Uri.parse(AppConfig.streamEndUrl),
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer $appToken',
@@ -256,7 +255,7 @@ class StreamingService {
       }
 
       final response = await http.get(
-        Uri.parse('$_backendUrl/api/streams'),
+        Uri.parse(AppConfig.streamsUrl),
         headers: {
           'Authorization': 'Bearer $appToken',
         },

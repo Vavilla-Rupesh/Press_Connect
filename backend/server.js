@@ -20,8 +20,8 @@ const authService = new AuthService(database);
 app.use(helmet());
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-domain.com'] 
-    : ['http://localhost:8080', 'http://localhost:3000'],
+    ? (process.env.CORS_ORIGINS || 'https://app.pressconnect.com').split(',').map(url => url.trim())
+    : (process.env.CORS_ORIGINS || 'http://localhost:8080,http://localhost:3000').split(',').map(url => url.trim()),
   credentials: true
 }));
 app.use(morgan('combined'));
