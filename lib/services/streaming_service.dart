@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'youtube_auth_service.dart';
-// Note: flutter_rtmp_publisher would be used in real implementation
+// Note: rtmp_broadcaster would be used in real implementation
 
 class StreamingService {
   static const String _backendUrl = 'http://localhost:3000';
@@ -73,9 +73,9 @@ class StreamingService {
         throw Exception('Already streaming');
       }
 
-      // In a real implementation, you would use flutter_rtmp_publisher
+      // In a real implementation, you would use rtmp_broadcaster
       // Something like:
-      // await FlutterRtmpPublisher.startStream(
+      // await RtmpBroadcaster.startStream(
       //   url: '$ingestUrl/$streamKey',
       //   width: 720,
       //   height: 1280,
@@ -122,7 +122,7 @@ class StreamingService {
       }
 
       // In a real implementation:
-      // await FlutterRtmpPublisher.stopStream();
+      // await RtmpBroadcaster.stopStream();
       
       _isStreaming = false;
       

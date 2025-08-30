@@ -25,7 +25,7 @@
 - ✅ **Multi-User Support**: Isolated streams per authenticated user
 
 ### 4. **Live Streaming Backend** - PRODUCTION READY
-- ✅ **RTMP Integration**: Infrastructure ready for flutter_rtmp_publisher
+- ✅ **RTMP Integration**: Infrastructure ready for rtmp_broadcaster
 - ✅ **Stream Management**: Database-backed stream state management
 - ✅ **Real-time Controls**: Start/stop streaming with backend coordination
 - ✅ **Error Recovery**: Graceful handling of streaming failures
@@ -124,7 +124,7 @@ snapshots (id, stream_id, filename, file_path, created_at)
 - Stream lifecycle management (create → start → stop → cleanup)
 
 ### RTMP Streaming
-- Infrastructure ready for `flutter_rtmp_publisher`
+- Infrastructure ready for `rtmp_broadcaster`
 - Stream key generation and management
 - Real-time camera preview with overlay
 - Recording and snapshot capabilities
@@ -199,7 +199,7 @@ The implementation provides a complete foundation for a professional live stream
 7. **Comprehensive Documentation**: Setup guides and testing tools
 
 The app is ready for:
-- Final RTMP integration with `flutter_rtmp_publisher`
+- Final RTMP integration with `rtmp_broadcaster`
 - YouTube API credential configuration
 - Production deployment
 - User testing and feedback

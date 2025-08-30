@@ -163,7 +163,7 @@ flutter run
 
 ### Flutter
 - `camera` - Camera access
-- `flutter_rtmp_publisher` - RTMP streaming
+- `rtmp_broadcaster` - RTMP streaming
 - `http` - API communication
 - `shared_preferences` - Local storage
 - `oauth2` - Authentication
@@ -185,7 +185,7 @@ flutter run
 
 ### RTMP Streaming
 
-The app uses `flutter_rtmp_publisher` for direct RTMP streaming to YouTube. Each stream session creates a unique broadcast and stream key to prevent conflicts.
+The app uses `rtmp_broadcaster` for direct RTMP streaming to YouTube. Each stream session creates a unique broadcast and stream key to prevent conflicts.
 
 ## Security Notes
 

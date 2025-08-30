@@ -4,14 +4,14 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.19.0 <4.0.0'
+  sdk: '>=3.4.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
   http: ^1.1.0
-  flutter_rtmp_publisher: ^1.0.5
+  rtmp_broadcaster: ^2.3.4
   url_launcher: ^6.2.1
   shared_preferences: ^2.2.2
   oauth2: ^2.0.2
