@@ -78,7 +78,7 @@ flutter run
 
 ✅ **Live Streaming**
 - Camera preview with real-time display
-- RTMP streaming setup (ready for flutter_rtmp_publisher)
+- RTMP streaming setup (ready for rtmp_broadcaster)
 - YouTube API integration for broadcast creation
 
 ✅ **Watermark Overlay**
@@ -99,7 +99,7 @@ flutter run
 ## Notes
 
 - The RTMP streaming uses placeholder implementation
-- In production, integrate `flutter_rtmp_publisher` package
+- In production, integrate `rtmp_broadcaster` package
 - OAuth2 flow is simplified for demo purposes
 - Add proper error handling and token refresh in production
 - Store sensitive credentials securely
