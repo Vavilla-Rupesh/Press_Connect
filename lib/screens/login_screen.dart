@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../services/youtube_auth_service.dart';
+import '../config/app_config.dart';
 import 'youtube_auth_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,8 +18,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   bool _isRegistering = false;
-  
-  static const String _backendUrl = 'http://localhost:3000';
 
   void _toggleMode() {
     setState(() {
@@ -59,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _register() async {
     final response = await http.post(
-      Uri.parse('$_backendUrl/api/auth/register'),
+      Uri.parse(AppConfig.authRegisterUrl),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'username': _usernameController.text,
@@ -94,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _login() async {
     final response = await http.post(
-      Uri.parse('$_backendUrl/api/auth/login'),
+      Uri.parse(AppConfig.authLoginUrl),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'username': _usernameController.text,

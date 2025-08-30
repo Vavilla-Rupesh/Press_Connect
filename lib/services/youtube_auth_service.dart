@@ -2,13 +2,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../config/app_config.dart';
 
 class YouTubeAuthService {
   static const String _clientId = 'YOUR_YOUTUBE_CLIENT_ID';
   static const String _clientSecret = 'YOUR_YOUTUBE_CLIENT_SECRET';
-  static const String _redirectUri = 'http://localhost:8080/auth/callback';
   static const String _scope = 'https://www.googleapis.com/auth/youtube';
-  static const String _backendUrl = 'http://localhost:3000';
   
   static const String _authTokenKey = 'youtube_auth_token';
   static const String _refreshTokenKey = 'youtube_refresh_token';
@@ -26,7 +25,7 @@ class YouTubeAuthService {
       // Construct proper OAuth2 URL
       final authUrl = 'https://accounts.google.com/o/oauth2/v2/auth'
           '?client_id=$_clientId'
-          '&redirect_uri=${Uri.encodeComponent(_redirectUri)}'
+          '&redirect_uri=${Uri.encodeComponent(AppConfig.oauthRedirectUri)}'
           '&scope=${Uri.encodeComponent(_scope)}'
           '&response_type=code'
           '&access_type=offline'
@@ -81,7 +80,7 @@ class YouTubeAuthService {
           'client_secret': _clientSecret,
           'code': authorizationCode,
           'grant_type': 'authorization_code',
-          'redirect_uri': _redirectUri,
+          'redirect_uri': AppConfig.oauthRedirectUri,
         },
       );
 
@@ -129,7 +128,7 @@ class YouTubeAuthService {
       if (appToken == null) return;
 
       await http.post(
-        Uri.parse('$_backendUrl/api/auth/oauth/store'),
+        Uri.parse(AppConfig.authOauthStoreUrl),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $appToken',
